@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Spectre.Console" Version="0.45.0" />
-    <PackageReference Include="Sylvan.Data.Csv" Version="1.2.2" />
+    <PackageReference Include="Sylvan.Data.Csv" Version="1.2.4" />
   </ItemGroup>
 
 </Project>
