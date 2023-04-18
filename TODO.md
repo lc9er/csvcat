@@ -1,4 +1,4 @@
 - [ ] Sort by field
 - [ ] Sample size (randomize output of lines)
-- [ ] Tail option (-t)
+- [x] Tail option (-t)
 - [ ] Field matches, gt/lt?
