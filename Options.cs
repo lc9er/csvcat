@@ -14,6 +14,9 @@ public class Options
     [Option('t', "tail", Default = false, HelpText = "Tail csv file")]
     public bool Tail { get; set; }
 
+    [Option('s', "sort", HelpText = "Sort by field index (0-based)")]
+    public int? Sort { get; set; }
+
     [Option('d', "delimiter", Default = ',', HelpText = "Delimiting character. Default = ','")]
     public char Delimiter { get; set; }
 

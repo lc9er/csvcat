@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Sylvan.Data.Csv;
 
 namespace csvcat;
@@ -70,5 +71,11 @@ public class ParseCsv
             return string.Join("\n", File.ReadLines(_filename).TakeLast(_lines + 1));
 
         return string.Join("\n", File.ReadLines(_filename).Take(_lines + 1));
+    }
+
+    public void Sort(int? index)
+    {
+        if (index.HasValue)
+            CsvLines = CsvLines.OrderBy(lst => lst[index.Value]).ToList();
     }
 }

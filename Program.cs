@@ -1,5 +1,7 @@
-﻿using CommandLine;
+﻿using System.Linq;
+using CommandLine;
 using CommandLine.Text;
+using System.ComponentModel.Design;
 
 namespace csvcat;
 
@@ -12,15 +14,18 @@ class Program
         parserResults
             .WithParsed<Options>(opts =>
                 {
-                    Run(opts.Filename, opts.Lines, opts.Tail, opts.Delimiter);
+                    Run(opts.Filename, opts.Lines, opts.Tail, opts.Sort, opts.Delimiter);
                 })
             .WithNotParsed(errs => DisplayHelp(parserResults, errs));
     }
 
-    static void Run(string fileName, int lines, bool tail, char delimiter)
+    static void Run(string fileName, int lines, bool tail, int? sort, char delimiter)
     {
         var catLines = new ParseCsv(fileName, lines, tail, delimiter);
         catLines.ReadCsvFile();
+
+        if (sort.HasValue)
+            catLines.Sort(sort);
 
         // display result table
         OutputTable.PrintTable(catLines);
