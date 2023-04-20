@@ -76,6 +76,14 @@ public class ParseCsv
     public void Sort(int? index)
     {
         if (index.HasValue)
-            CsvLines = CsvLines.OrderBy(lst => lst[index.Value]).ToList();
+        {
+            // Test for numeric or alpha chars in field
+            bool result = int.TryParse(CsvLines[0][index.Value], out _);
+
+            if (result)
+                CsvLines = CsvLines.OrderBy(lst => int.Parse(lst[index.Value])).ToList();
+            else                
+                CsvLines = CsvLines.OrderBy(lst => lst[index.Value]).ToList();
+        }
     }
 }
