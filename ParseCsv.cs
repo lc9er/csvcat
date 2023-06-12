@@ -7,9 +7,9 @@ namespace csvcat;
 public class ParseCsv
 {
     private string _filename;
-    private int _lines;
-    private bool _tail;
-    private char _delimiter;
+    private int    _lines;
+    private bool   _tail;
+    private char   _delimiter;
     public List<string> Header { get; set; } = new List<string>();
     public List<List<string>> CsvLines { get; private set; } = new List<List<string>>();
 
@@ -64,14 +64,10 @@ public class ParseCsv
         return CsvValues;
     }
 
-    private string GetFileLines()
-    {
+    private string GetFileLines() =>
         // take extra line to account for header
-        if (_tail)
-            return string.Join("\n", File.ReadLines(_filename).TakeLast(_lines + 1));
-
-        return string.Join("\n", File.ReadLines(_filename).Take(_lines + 1));
-    }
+        _tail == true ? string.Join("\n", File.ReadLines(_filename).TakeLast(_lines + 1))
+            : string.Join("\n", File.ReadLines(_filename).Take(_lines + 1));
 
     public void Sort(int? index)
     {
@@ -80,10 +76,9 @@ public class ParseCsv
             // Test for numeric or alpha chars in field
             bool result = int.TryParse(CsvLines[0][index.Value], out _);
 
-            if (result)
-                CsvLines = CsvLines.OrderBy(lst => int.Parse(lst[index.Value])).ToList();
-            else                
-                CsvLines = CsvLines.OrderBy(lst => lst[index.Value]).ToList();
+            CsvLines = 
+                result == true ? CsvLines.OrderBy(lst => int.Parse(lst[index.Value])).ToList()
+                : CsvLines.OrderBy(lst => lst[index.Value]).ToList();
         }
     }
 }
