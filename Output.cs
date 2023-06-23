@@ -4,7 +4,10 @@ namespace csvcat;
 
 public class OutputTable
 {
-    public static void PrintTable(ParseCsv CsvLines)
+    private string _oddLine  = "[blue]";
+    private string _evenLine = "[orange1]";
+
+    public void PrintTable(ParseCsv CsvLines)
     {
         Table table = new()
         {
@@ -12,13 +15,11 @@ public class OutputTable
         };
         table.AddColumns(CsvLines.Header.ToArray());
 
-        for (int i = 0; i < CsvLines.CsvLines.Count; i++)
-        {
-            if (i % 2 == 0)
-                table.AddRow(FormatTableRow("[blue]", CsvLines.CsvLines[i]));
-            else
-                table.AddRow(FormatTableRow("[orange1]", CsvLines.CsvLines[i]));
-        }
+        // Set line colors
+        Enumerable.Range(0, CsvLines.CsvLines.Count)
+            .Select((line, index) => line % 2 == 0 ? (_oddLine, index) : (_evenLine, index))
+            .ToList()
+            .ForEach(x => table.AddRow(FormatTableRow(x.Item1, CsvLines.CsvLines[index: x.Item2])));
 
         AnsiConsole.Write(table);
     }

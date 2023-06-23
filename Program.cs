@@ -28,6 +28,7 @@ class Program
             catLines.Sort(sort);
 
         // display result table
-        OutputTable.PrintTable(catLines);
+        var outTable = new OutputTable();
+        outTable.PrintTable(catLines);
     }
 }
