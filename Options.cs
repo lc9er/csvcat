@@ -25,8 +25,21 @@ public class Options
     {
         get
         {
-            yield return new Example("cat csv file", new Options { Filename = "file.csv", Lines = 20});
+            yield return new Example("cat csv file", new Options { Filename = "file.csv", Lines = 20 });
             yield return new Example("tail csv file", new Options { Filename = "file.csv", Lines = 30, Tail = true, Delimiter = '|' });
         }
+    }
+    public static void DisplayHelp<T>(ParserResult<T> result, IEnumerable<Error> errs)
+    {
+        HelpText helpText = errs.IsVersion() ? HelpText.AutoBuild(result)   
+            : HelpText.AutoBuild(result, h =>
+                {
+                    h.AdditionalNewLineAfterOption = false;
+                    h.Heading = "csvcat 1.0.0";
+                    h.Copyright = "Copyright (c) 2023 lc9er";
+                    return HelpText.DefaultParsingErrorsHandler(result, h);
+                }, e => e);
+
+        Console.WriteLine(helpText);
     }
 }

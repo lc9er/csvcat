@@ -45,7 +45,7 @@ public class ParseCsv
 
     private void GetHeaders()
     {
-        var headerRow = string.Join("\n", File.ReadLines(_filename).Take(1));
+        var headerRow = JoinLines(_filename, 1);
         var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
 
         using CsvDataReader csv = CsvDataReader.Create(new StringReader(headerRow), csvOpts);
@@ -66,8 +66,14 @@ public class ParseCsv
 
     private string GetFileLines() =>
         // take extra line to account for header
-        _tail == true ? string.Join("\n", File.ReadLines(_filename).TakeLast(_lines + 1))
-            : string.Join("\n", File.ReadLines(_filename).Take(_lines + 1));
+        _tail == true ? JoinLastLines(_filename, _lines + 1) 
+            : JoinLines(_filename, _lines + 1); 
+
+    private string JoinLastLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName).TakeLast(linesCount));
+
+    private string JoinLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName).Take(linesCount));
 
     public void Sort(int? index)
     {
