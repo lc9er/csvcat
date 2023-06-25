@@ -21,14 +21,14 @@ class Program
 
     static void Run(string fileName, int lines, bool tail, int? sort, char delimiter)
     {
-        var catLines = new ParseCsv(fileName, lines, tail, delimiter);
-        catLines.ReadCsvFile();
-
-        if (sort.HasValue)
-            catLines.Sort(sort);
+        ParseCsv catLines = new(fileName, lines, tail, delimiter);
+        catLines
+            .GetHeaders()
+            .GetCsvLines()
+            .Sort(sort);
 
         // display result table
         var outTable = new OutputTable();
-        outTable.PrintTable(catLines);
+        outTable.PrintTable(catLines.Header, catLines.CsvLines);
     }
 }

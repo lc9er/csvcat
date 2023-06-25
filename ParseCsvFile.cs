@@ -10,8 +10,9 @@ public class ParseCsv
     private int    _lines;
     private bool   _tail;
     private char   _delimiter;
-    public List<string> Header { get; set; } = new List<string>();
-    public List<List<string>> CsvLines { get; private set; } = new List<List<string>>();
+    // Make composable with their own classes. Pass these to output, instead of entire ParseCsv Obj
+    public List<string> Header { get; set; } = new ();
+    public List<List<string>> CsvLines { get; private set; } = new ();
 
     public ParseCsv(string fileName, int lines, bool tail, char delimiter)
     {
@@ -21,14 +22,25 @@ public class ParseCsv
         _delimiter = delimiter;
     }
 
-    public void ReadCsvFile()
+    public ParseCsv GetHeaders()
+    {
+        var headerRow = JoinLines(_filename, 1);
+        var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
+
+        using CsvDataReader csv = CsvDataReader.Create(new StringReader(headerRow), csvOpts);
+
+        for (int i = 0; i < csv.FieldCount; i++)
+            Header.Add(csv.GetName(i));
+
+        return this;
+    }
+
+    public ParseCsv GetCsvLines()
     {
         try
         {
             var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
             using CsvDataReader csv = CsvDataReader.Create(new StringReader(GetFileLines()), csvOpts);
-
-            GetHeaders();
 
             while (csv.Read())
             {
@@ -41,39 +53,9 @@ public class ParseCsv
             Console.WriteLine(ex.Message);
             Environment.Exit(1);
         }
+
+        return this;
     }
-
-    private void GetHeaders()
-    {
-        var headerRow = JoinLines(_filename, 1);
-        var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
-
-        using CsvDataReader csv = CsvDataReader.Create(new StringReader(headerRow), csvOpts);
-
-        for (int i = 0; i < csv.FieldCount; i++)
-            Header.Add(csv.GetName(i));
-    }
-
-    private List<string> GetCsvFields(CsvDataReader line)
-    {
-        var CsvValues = new List<string>();
-
-        for (int i = 0; i < line.FieldCount; i++)
-            CsvValues.Add(line.GetString(i));
-
-        return CsvValues;
-    }
-
-    private string GetFileLines() =>
-        // take extra line to account for header
-        _tail == true ? JoinLastLines(_filename, _lines + 1) 
-            : JoinLines(_filename, _lines + 1); 
-
-    private string JoinLastLines(string fileName, int linesCount) =>
-        string.Join(Environment.NewLine, File.ReadLines(fileName).TakeLast(linesCount));
-
-    private string JoinLines(string fileName, int linesCount) =>
-        string.Join(Environment.NewLine, File.ReadLines(fileName).Take(linesCount));
 
     public void Sort(int? index)
     {
@@ -87,4 +69,21 @@ public class ParseCsv
                 : CsvLines.OrderBy(lst => lst[index.Value]).ToList();
         }
     }
+
+    private static List<string> GetCsvFields(CsvDataReader line) =>
+        Enumerable.Range(0, line.FieldCount)
+            .Select(x => line.GetString(x))
+            .ToList();
+
+    private string GetFileLines() =>
+        // take extra line to account for header
+        _tail == true ? JoinLastLines(_filename, _lines + 1) 
+            : JoinLines(_filename, _lines + 1); 
+
+    private string JoinLastLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName).TakeLast(linesCount));
+
+    private string JoinLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName).Take(linesCount));
+
 }

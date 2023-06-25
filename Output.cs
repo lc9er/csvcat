@@ -7,19 +7,19 @@ public class OutputTable
     private string _oddLine  = "[blue]";
     private string _evenLine = "[orange1]";
 
-    public void PrintTable(ParseCsv CsvLines)
+    public void PrintTable(List<string> header, List<List<string>>csvlines)
     {
         Table table = new()
         {
             Border = TableBorder.Simple
         };
-        table.AddColumns(CsvLines.Header.ToArray());
+        table.AddColumns(header.ToArray());
 
         // Set line colors
-        Enumerable.Range(0, CsvLines.CsvLines.Count)
+        Enumerable.Range(0, csvlines.Count)
             .Select((line, index) => line % 2 == 0 ? (_oddLine, index) : (_evenLine, index))
             .ToList()
-            .ForEach(x => table.AddRow(FormatTableRow(x.Item1, CsvLines.CsvLines[index: x.Item2])));
+            .ForEach(x => table.AddRow(FormatTableRow(x.Item1, csvlines[index: x.Item2])));
 
         AnsiConsole.Write(table);
     }
