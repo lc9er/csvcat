@@ -1,5 +1,6 @@
 - [x] Sort by field
-- [ ] Reverse sort
+- [x] Reverse sort
 - [ ] Sample size (randomize output of lines)
 - [x] Tail option (-t)
 - [ ] Field matches, gt/lt?
+- [x] Test file exists.

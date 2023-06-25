@@ -17,6 +17,9 @@ public class Options
     [Option('s', "sort", HelpText = "Sort by field index (0-based)")]
     public int? Sort { get; set; }
 
+    [Option('r', "reverse", Default = false, HelpText = "Reverse results")]
+    public bool Reverse { get; set; }
+
     [Option('d', "delimiter", Default = ',', HelpText = "Delimiting character. Default = ','")]
     public char Delimiter { get; set; }
 
@@ -35,7 +38,7 @@ public class Options
             : HelpText.AutoBuild(result, h =>
                 {
                     h.AdditionalNewLineAfterOption = false;
-                    h.Heading = "csvcat 1.0.1";
+                    h.Heading = "csvcat 1.1.0";
                     h.Copyright = "Copyright (c) 2023 lc9er";
                     return HelpText.DefaultParsingErrorsHandler(result, h);
                 }, e => e);

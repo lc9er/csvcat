@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using Sylvan.Data.Csv;
+﻿using Sylvan.Data.Csv;
 
 namespace csvcat;
 
@@ -10,16 +8,19 @@ public class ParseCsv
     private int    _lines;
     private bool   _tail;
     private char   _delimiter;
-    // Make composable with their own classes. Pass these to output, instead of entire ParseCsv Obj
-    public List<string> Header { get; set; } = new ();
-    public List<List<string>> CsvLines { get; private set; } = new ();
+    private int?   _sort;
+    private bool   _reverse;
+    public List<string> Header { get; set; } = new();
+    public List<List<string>> CsvLines { get; private set; } = new();
 
-    public ParseCsv(string fileName, int lines, bool tail, char delimiter)
+    public ParseCsv(string fileName, int lines, bool tail, char delimiter, int? sort, bool reverse)
     {
         _filename  = fileName;
         _lines     = lines;
         _tail      = tail;
         _delimiter = delimiter;
+        _sort      = sort;
+        _reverse   = reverse;
     }
 
     public ParseCsv GetHeaders()
@@ -35,39 +36,52 @@ public class ParseCsv
         return this;
     }
 
-    public ParseCsv GetCsvLines()
+    public ParseCsv VerifyFile()
     {
-        try
+        if (!File.Exists(_filename))
         {
-            var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
-            using CsvDataReader csv = CsvDataReader.Create(new StringReader(GetFileLines()), csvOpts);
-
-            while (csv.Read())
-            {
-                List<string> currentLine = GetCsvFields(csv);
-                CsvLines.Add(currentLine);
-            }
-        }
-        catch (FileNotFoundException ex)
-        {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine($"File: {_filename} does not exist");
             Environment.Exit(1);
         }
 
         return this;
     }
 
-    public void Sort(int? index)
+    public ParseCsv GetCsvLines()
     {
-        if (index.HasValue)
+        var csvOpts = new CsvDataReaderOptions { Delimiter = _delimiter };
+        using CsvDataReader csv = CsvDataReader.Create(new StringReader(GetFileLines()), csvOpts);
+
+        while (csv.Read())
+        {
+            List<string> currentLine = GetCsvFields(csv);
+            CsvLines.Add(currentLine);
+        }
+
+        return this;
+    }
+
+    public ParseCsv Sort()
+    {
+        if (_sort.HasValue)
         {
             // Test for numeric or alpha chars in field
-            bool result = int.TryParse(CsvLines[0][index.Value], out _);
+            bool result = int.TryParse(CsvLines[0][_sort.Value], out _);
 
             CsvLines = 
-                result == true ? CsvLines.OrderBy(lst => int.Parse(lst[index.Value])).ToList()
-                : CsvLines.OrderBy(lst => lst[index.Value]).ToList();
+                result == true ? CsvLines.OrderBy(lst => int.Parse(lst[_sort.Value])).ToList()
+                : CsvLines.OrderBy(lst => lst[_sort.Value]).ToList();
         }
+
+        return this;
+    }
+
+    public ParseCsv ReverseSort()
+    {
+        if (_reverse)
+            CsvLines.Reverse();
+
+        return this;
     }
 
     private static List<string> GetCsvFields(CsvDataReader line) =>
