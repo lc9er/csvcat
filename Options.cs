@@ -8,7 +8,7 @@ public class Options
     [Value(0, MetaName = "csv file", Required = true)]
     public string Filename { get; set; }
 
-    [Option('n', "number", Default = 10, HelpText = "Number of lines. Default = 10")]
+    [Option('n', "number", Default = 0, HelpText = "Number of lines.")]
     public int Lines { get; set; }
 
     [Option('t', "tail", Default = false, HelpText = "Tail csv file")]

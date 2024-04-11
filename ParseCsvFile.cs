@@ -89,15 +89,24 @@ public class ParseCsv
             .Select(x => line.GetString(x))
             .ToList();
 
-    private string GetFileLines() =>
+    private string GetFileLines()
+    {
         // take extra line to account for header
-        _tail == true ? JoinLastLines(_filename, _lines + 1) 
-            : JoinLines(_filename, _lines + 1); 
+        if (_lines > 0)
+            return _tail ? JoinLastLines(_filename, _lines + 1) : JoinLines(_filename, _lines + 1);
+        else
+            return _tail ? JoinLastLines(_filename) : JoinLines(_filename);
+    }
 
     private string JoinLastLines(string fileName, int linesCount) =>
         string.Join(Environment.NewLine, File.ReadLines(fileName).TakeLast(linesCount));
 
+    private string JoinLastLines(string fileName) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName));
+
     private string JoinLines(string fileName, int linesCount) =>
         string.Join(Environment.NewLine, File.ReadLines(fileName).Take(linesCount));
 
+    private string JoinLines(string fileName) =>
+        string.Join(Environment.NewLine, File.ReadLines(fileName));
 }
