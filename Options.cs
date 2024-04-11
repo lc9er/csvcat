@@ -38,7 +38,7 @@ public class Options
             : HelpText.AutoBuild(result, h =>
                 {
                     h.AdditionalNewLineAfterOption = false;
-                    h.Heading = "csvcat 1.1.0";
+                    h.Heading = "csvcat 1.1.1";
                     h.Copyright = "Copyright (c) 2023 lc9er";
                     return HelpText.DefaultParsingErrorsHandler(result, h);
                 }, e => e);
