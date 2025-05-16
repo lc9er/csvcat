@@ -7,4 +7,5 @@
 - [ ] Proper error output/logging
 - [ ] Fix path handling
 - [ ] Exclude fields
-- [ ] Convert Header and CsvLines to record
+- [ ] Convert Header and CsvLines to its own type
+- [ ] fix ParseCsvFile constructor
