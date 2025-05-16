@@ -8,4 +8,4 @@
 - [ ] Fix path handling
 - [ ] Exclude fields
 - [ ] Convert Header and CsvLines to its own type
-- [ ] fix ParseCsvFile constructor
+- [x] fix ParseCsvFile constructor
