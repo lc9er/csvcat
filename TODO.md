@@ -4,3 +4,7 @@
 - [x] Tail option (-t)
 - [ ] Field matches, gt/lt?
 - [x] Test file exists.
+- [ ] Proper error output/logging
+- [ ] Fix path handling
+- [ ] Exclude fields
+- [ ] Convert Header and CsvLines to record
