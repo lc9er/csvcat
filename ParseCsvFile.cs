@@ -13,14 +13,14 @@ public class ParseCsv
     public List<string> Header { get; set; } = new();
     public List<List<string>> CsvLines { get; private set; } = new();
 
-    public ParseCsv(string fileName, int lines, bool tail, char delimiter, int? sort, bool reverse)
+    public ParseCsv(Options opts)
     {
-        _filename  = fileName;
-        _lines     = lines;
-        _tail      = tail;
-        _delimiter = delimiter;
-        _sort      = sort;
-        _reverse   = reverse;
+        _filename  = opts.Filename;
+        _lines     = opts.Lines;
+        _tail      = opts.Tail;
+        _delimiter = opts.Delimiter;
+        _sort      = opts.Sort;
+        _reverse   = opts.Reverse;
     }
 
     public ParseCsv GetHeaders()

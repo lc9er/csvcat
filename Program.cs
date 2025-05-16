@@ -12,7 +12,7 @@ parserResults
 
 static void Run(Options opts)
 {
-    ParseCsv catLines = new(opts.Filename, opts.Lines, opts.Tail, opts.Delimiter, opts.Sort, opts.Reverse);
+    ParseCsv catLines = new(opts);
     catLines
         .VerifyFile()
         .GetHeaders()
