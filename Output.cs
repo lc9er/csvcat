@@ -4,11 +4,15 @@ namespace csvcat;
 
 public class OutputTable
 {
-    private string _oddLine  = "[blue]";
-    private string _evenLine = "[orange1]";
+    private readonly string _oddLine  = "[blue]";
+    private readonly string _evenLine = "[orange1]";
+    private readonly string _lineBreak = "[/]";
 
-    public void PrintTable(List<string> header, List<List<string>>csvlines)
+    public void PrintTable(CsvObj csvobj)
     {
+        var header = csvobj.Header;
+        var csvlines = csvobj.CsvLines;
+
         Table table = new()
         {
             Border = TableBorder.Simple
@@ -23,13 +27,13 @@ public class OutputTable
 
         AnsiConsole.Write(table);
     }
-    private static Markup[] FormatTableRow(string color, List<string> row)
+    private Markup[] FormatTableRow(string color, List<string> row)
     {
         int rowSize = row.Count;
         var formattedRow = new Markup[rowSize];
 
         for (int i = 0; i < rowSize; i++)
-            formattedRow[i] = new Markup(color + Markup.Escape(row[i]) + "[/]");
+            formattedRow[i] = new Markup(color + Markup.Escape(row[i]) + _lineBreak);
 
         return formattedRow;
     }

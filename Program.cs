@@ -22,5 +22,5 @@ static void Run(Options opts)
 
     // display result table
     var outTable = new OutputTable();
-    outTable.PrintTable(catLines.Header, catLines.CsvLines);
+    outTable.PrintTable(catLines.csvObj);
 }

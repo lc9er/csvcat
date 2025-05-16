@@ -4,14 +4,13 @@ namespace csvcat;
 
 public class ParseCsv
 {
-    private string _filename;
-    private int    _lines;
-    private bool   _tail;
-    private char   _delimiter;
-    private int?   _sort;
-    private bool   _reverse;
-    public List<string> Header { get; set; } = new();
-    public List<List<string>> CsvLines { get; private set; } = new();
+    private readonly string _filename;
+    private readonly int    _lines;
+    private readonly bool   _tail;
+    private readonly char   _delimiter;
+    private readonly int?   _sort;
+    private readonly bool   _reverse;
+    public CsvObj csvObj = new ();
 
     public ParseCsv(Options opts)
     {
@@ -31,7 +30,7 @@ public class ParseCsv
         using CsvDataReader csv = CsvDataReader.Create(new StringReader(headerRow), csvOpts);
 
         for (int i = 0; i < csv.FieldCount; i++)
-            Header.Add(csv.GetName(i));
+            csvObj.AddHeader(csv.GetName(i));
 
         return this;
     }
@@ -55,7 +54,7 @@ public class ParseCsv
         while (csv.Read())
         {
             List<string> currentLine = GetCsvFields(csv);
-            CsvLines.Add(currentLine);
+            csvObj.AddRow(currentLine);
         }
 
         return this;
@@ -64,14 +63,7 @@ public class ParseCsv
     public ParseCsv Sort()
     {
         if (_sort.HasValue)
-        {
-            // Test for numeric or alpha chars in field
-            bool result = int.TryParse(CsvLines[0][_sort.Value], out _);
-
-            CsvLines = 
-                result == true ? CsvLines.OrderBy(lst => int.Parse(lst[_sort.Value])).ToList()
-                : CsvLines.OrderBy(lst => lst[_sort.Value]).ToList();
-        }
+            csvObj.Sort(_sort.Value);
 
         return this;
     }
@@ -79,7 +71,7 @@ public class ParseCsv
     public ParseCsv ReverseSort()
     {
         if (_reverse)
-            CsvLines.Reverse();
+            csvObj.Reverse();
 
         return this;
     }
@@ -98,15 +90,17 @@ public class ParseCsv
             return _tail ? JoinLastLines(_filename) : JoinLines(_filename);
     }
 
-    private string JoinLastLines(string fileName, int linesCount) =>
-        string.Join(Environment.NewLine, File.ReadLines(fileName).TakeLast(linesCount));
+    private static string JoinLastLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine,
+            File.ReadLines(fileName).TakeLast(linesCount));
 
-    private string JoinLastLines(string fileName) =>
+    private static string JoinLastLines(string fileName) =>
         string.Join(Environment.NewLine, File.ReadLines(fileName));
 
-    private string JoinLines(string fileName, int linesCount) =>
-        string.Join(Environment.NewLine, File.ReadLines(fileName).Take(linesCount));
+    private static string JoinLines(string fileName, int linesCount) =>
+        string.Join(Environment.NewLine,
+            File.ReadLines(fileName).Take(linesCount));
 
-    private string JoinLines(string fileName) =>
+    private static string JoinLines(string fileName) =>
         string.Join(Environment.NewLine, File.ReadLines(fileName));
 }
