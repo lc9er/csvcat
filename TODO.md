@@ -1,11 +1,9 @@
 - [x] Sort by field
 - [x] Reverse sort
-- [ ] Sample size (randomize output of lines)
+- [ ] Sample size (randomize sequence of lines)
 - [x] Tail option (-t)
 - [ ] Field matches, gt/lt?
 - [x] Test file exists.
-- [ ] Proper error output/logging
-- [ ] Fix path handling
 - [ ] Add Exclude fields option
 - [x] Convert Header and CsvLines to its own type
 - [x] fix ParseCsvFile constructor
