@@ -7,3 +7,4 @@
 - [ ] Add Exclude fields option
 - [x] Convert Header and CsvLines to its own type
 - [x] fix ParseCsvFile constructor
+- [ ] setup DI
