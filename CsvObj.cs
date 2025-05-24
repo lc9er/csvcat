@@ -15,7 +15,7 @@ public class CsvObj
         bool result = int.TryParse(CsvLines[0][sortBy], out _);
 
         CsvLines =
-            result == true ? CsvLines.OrderBy(lst => int.Parse(lst[sortBy])).ToList()
-            : CsvLines.OrderBy(lst => lst[sortBy]).ToList();
+            result == true ? [.. CsvLines.OrderBy(lst => int.Parse(lst[sortBy]))]
+            : [.. CsvLines.OrderBy(lst => lst[sortBy])];
     }
 }

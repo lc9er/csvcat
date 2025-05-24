@@ -77,9 +77,7 @@ public class ParseCsv
     }
 
     private static List<string> GetCsvFields(CsvDataReader line) =>
-        Enumerable.Range(0, line.FieldCount)
-            .Select(x => line.GetString(x))
-            .ToList();
+        [.. Enumerable.Range(0, line.FieldCount).Select(x => line.GetString(x))];
 
     private string GetFileLines()
     {
