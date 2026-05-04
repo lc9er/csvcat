@@ -2,25 +2,15 @@
 
 namespace csvcat;
 
-public class ParseCsv
+public class ParseCsv(Options opts)
 {
-    private readonly string _filename;
-    private readonly int    _lines;
-    private readonly bool   _tail;
-    private readonly char   _delimiter;
-    private readonly int?   _sort;
-    private readonly bool   _reverse;
-    public CsvObj csvObj = new ();
-
-    public ParseCsv(Options opts)
-    {
-        _filename  = opts.Filename;
-        _lines     = opts.Lines;
-        _tail      = opts.Tail;
-        _delimiter = opts.Delimiter;
-        _sort      = opts.Sort;
-        _reverse   = opts.Reverse;
-    }
+    private readonly string _filename = opts.Filename;
+    private readonly int _lines       = opts.Lines;
+    private readonly bool _tail       = opts.Tail;
+    private readonly char _delimiter  = opts.Delimiter;
+    private readonly int? _sort       = opts.Sort;
+    private readonly bool _reverse    = opts.Reverse;
+    public  CsvObj csvObj             = new ();
 
     public ParseCsv GetHeaders()
     {

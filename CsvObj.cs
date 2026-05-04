@@ -2,8 +2,8 @@ namespace csvcat;
 
 public class CsvObj
 {
-    public List<string> Header { get; } = new();
-    public List<List<string>> CsvLines { get; set; } = new();
+    public List<string> Header { get; } = [];
+    public List<List<string>> CsvLines { get; set; } = [];
 
     public void AddHeader(string header) => Header.Add(header);
     public void AddRow(List<string> row) => CsvLines.Add(row);
