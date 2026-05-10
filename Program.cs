@@ -1,13 +1,11 @@
 ﻿using CommandLine;
 using csvcat;
 
-var parserResults = new CommandLine.Parser(with => with.HelpWriter = null)
-                            .ParseArguments<Options>(args);
+var parserResults = new CommandLine
+                        .Parser(with => with.HelpWriter = null)
+                        .ParseArguments<Options>(args);
 parserResults
-    .WithParsed<Options>(opts =>
-        {
-            Run(opts);
-        })
+    .WithParsed<Options>(opts => { Run(opts); })
     .WithNotParsed(errs => Options.DisplayHelp(parserResults, errs));
 
 static void Run(Options opts)

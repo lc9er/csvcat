@@ -29,7 +29,7 @@ public class ParseCsv(Options opts)
     {
         if (!File.Exists(_filename))
         {
-            Console.WriteLine($"File: {_filename} does not exist");
+            Console.WriteLine($"File: {_filename} not found.");
             Environment.Exit(1);
         }
 
