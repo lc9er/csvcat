@@ -5,18 +5,19 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>csvcat</Title>
     <Version>1.1.3</Version>
     <PackAsTool>True</PackAsTool>
 	  <ToolCommandName>csvcat</ToolCommandName>
 	  <PackageOutputPath>./nupkg</PackageOutputPath>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="Spectre.Console" Version="0.55.2" />
     <PackageReference Include="Sylvan.Data.Csv" Version="1.4.4" />
+    <PackageReference Include="System.CommandLine" Version="2.0.8" />
   </ItemGroup>
 
 </Project>

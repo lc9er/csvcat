@@ -2,14 +2,14 @@
 
 namespace csvcat;
 
-public class ParseCsv(Options opts)
+public class ParseCsv(FileInfo file, int lines, bool tail, char delim, int? sort, bool rev)
 {
-    private readonly string _filename = opts.Filename;
-    private readonly int _lines       = opts.Lines;
-    private readonly bool _tail       = opts.Tail;
-    private readonly char _delimiter  = opts.Delimiter;
-    private readonly int? _sort       = opts.Sort;
-    private readonly bool _reverse    = opts.Reverse;
+    private readonly string _filename = file.FullName;
+    private readonly int _lines       = lines;
+    private readonly bool _tail       = tail;
+    private readonly char _delimiter  = delim;
+    private readonly int? _sort       = sort;
+    private readonly bool _reverse    = rev;
     public  CsvObj csvObj             = new ();
 
     public ParseCsv GetHeaders()
