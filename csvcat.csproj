@@ -10,6 +10,7 @@
     <Version>1.1.3</Version>
     <PackAsTool>True</PackAsTool>
 	  <ToolCommandName>csvcat</ToolCommandName>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 	  <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
 
